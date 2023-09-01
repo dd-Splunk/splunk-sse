@@ -1,0 +1,32 @@
+services:
+  so1:
+    networks:
+      splunknet:
+    image: splunk/splunk:${SPLUNK_IMAGE:-latest}
+    container_name: so1
+    platform: linux/amd64
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_APPS_URL
+      - SPLUNKBASE_USERNAME
+      - SPLUNKBASE_PASSWORD
+      - SPLUNK_PASSWORD
+      - TZ=${TZ}
+    ports:
+      - 8000:8000
+      - 8089:8089
+      - 9998:9998
+      - 9999:9999
+    volumes:
+      - so1-var:/opt/splunk/var
+      - so1-etc:/opt/splunk/etc
+    restart: always
+
+networks:
+  splunknet:
+    driver: bridge
+    attachable: true
+
+volumes:
+  so1-var:
+  so1-etc:
